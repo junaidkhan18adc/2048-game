@@ -84,6 +84,27 @@ class Game2048:
         self.draw_board()
 
         self.root.bind("<Key>", self.key_press)
+        
+        # FILE HANDLING
+
+def save_high_score(self):
+    try:
+        file = open("highscore.txt", "w")
+        file.write(str(self.high_score))
+        file.close()
+
+    except Exception as e:
+        print("File Save Error:", e)
+
+
+def load_high_score(self):
+    try:
+        file = open("highscore.txt", "r")
+        self.high_score = int(file.read())
+        file.close()
+
+    except:
+        self.high_score = 0
 
     def restart_game(self):
         self.board = [[0] * SIZE for _ in range(SIZE)]
@@ -197,26 +218,32 @@ class Game2048:
         self.board = self.transpose(self.board)
         return changed
 
+  # exception handling
     def key_press(self, event):
-        key = event.keysym
-        moved = False
 
-        if key == "Left":
-            moved = self.move_left()
+        try:
+            key = event.keysym
+            moved = False
 
-        elif key == "Right":
-            moved = self.move_right()
+            if key == "Left":
+                moved = self.move_left()
 
-        elif key == "Up":
-            moved = self.move_up()
+            elif key == "Right":
+                moved = self.move_right()
 
-        elif key == "Down":
-            moved = self.move_down()
+            elif key == "Up":
+                moved = self.move_up()
 
-        if moved:
-            self.add_tile()
-            self.update_score()
-            self.draw_board()
+            elif key == "Down":
+                moved = self.move_down()
+
+            if moved:
+                self.add_tile()
+                self.update_score()
+                self.draw_board()
+
+        except Exception as e:
+            print("Error:", e)
 
 root = tk.Tk()
 game = Game2048(root)
